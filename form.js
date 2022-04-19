@@ -1,13 +1,4 @@
-import { SimpleForm } from "./simpleForm.js";
-import { EditableForm } from "./editableForm.js";
-
-window.initializeForms =  function(){
-  let forms = []
-	$("form[form_type]").each(function(i, form){
-		forms[$(form).attr('id')] = Form.new(form)
-	});
-  return forms
-}
+manager.import(["assets/js/utils/simpleForm.js", "assets/js/utils/editableForm.js"])
 
 class Form {
   static new(form){
@@ -18,9 +9,15 @@ class Form {
       case 'editable':
         return new EditableForm(form)
       default: 
-        throw new ("Form Creation Error: Unknown form type")
+        throw "Form Creation Error: Unknown form type"
     }
   }
 }
 
-window.Form = Form
+function initializeForms(){
+  let forms = []
+	$("form[form_type]").each(function(i, form){
+		forms[$(form).attr('id')] = Form.new(form)
+	});
+  return forms
+}
