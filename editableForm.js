@@ -1,4 +1,4 @@
-manager.import(["assets/js/utils/validators.js", "assets/js/utils/ajax.js"])
+manager.import(["validators.js", "ajax.js"])
 
 class EditableForm {
   /**

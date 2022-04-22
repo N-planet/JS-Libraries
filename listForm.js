@@ -1,4 +1,4 @@
-manager.import(["assets/js/utils/list.js", "assets/js/utils/ajax.js"])
+manager.import(["list.js", "ajax.js"])
 
 class ListForm {
   /**

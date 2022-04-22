@@ -2,7 +2,7 @@
     <body>
         <h1> Simple Form Example </h1>
         <p>HTML Only form submission and handling response using ajax</p>
-        <form id="form1" form_type="simple" api="team.nplanet.org/forms-demo/demo.php" request_type="POST" callback="simpleTest">
+        <form id="form1" form_type="simple" api="team.nplanet.org/demo.php" request_type="POST" callback="simpleTest">
             <input name="field1" placeholder="Required Field" must regex="*">
             <input name="field2" placeholder="Optional Field" regex="*">
         </form>
@@ -10,8 +10,9 @@
         <p alert="form1"></p>
         <div id="simple-form-result" class="result"></div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="../dependencyManager.js"></script>
         <script>
-            manager.import("../form.js", "demo.js")
+            manager.import(["form.js", "demo/demo.js"])
         </script>
     </body>
-</html>
+</html> 

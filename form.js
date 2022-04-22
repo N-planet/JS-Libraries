@@ -1,4 +1,4 @@
-manager.import(["assets/js/utils/simpleForm.js", "assets/js/utils/editableForm.js"])
+manager.import(["simpleForm.js", "editableForm.js"])
 
 class Form {
   static new(form){
