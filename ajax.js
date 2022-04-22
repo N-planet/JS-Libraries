@@ -1,46 +1,48 @@
 class AJAX {
-  constructor(form){
-    this.form = form
-    this.api = $(form).attr('api')
-		this.type = $(form).attr('request_type')
-		this.callback = window[$(form).attr('callback')]
-  }
+	constructor(form){
+	this.form = form
+	this.api = $(form).attr('api')
+	this.type = $(form).attr('request_type')
+	this.callback = window[$(form).attr('callback')]
+	this.preloader = typeof preloader == "function" ? window['prelaoder'] : null
+	}
 
-  getData(){
+	getData(){
 		/**
 		 * Collect the filled data in the suitable data structure
 		 */
-    let form_data = new FormData(this.form);
-    if($(this.form).find('input[type=file]'))
-      return form_data;
-    
-    let data_object = {};
-    form_data.forEach(function(value, key){
-      data_object[key] = value;
-    });
-    return data_object
-  }
+	let form_data = new FormData(this.form);
+	if($(this.form).find('input[type=file]'))
+		return form_data;
 
-  submit(){
-    /**
-     * Send filled data
-     */
-    let data = this.getData()
-    this.send(data)
-  }
+	let data_object = {};
+	form_data.forEach(function(value, key){
+		data_object[key] = value;
+	});
+	return data_object
+	}
 
-  send(data){
+	submit(){
+	/**
+	 * Send filled data
+	 */
+	let data = this.getData()
+	this.send(data)
+	}
+
+  	send(data){
 		let options = {
 			url: this.api,
 			type: this.type,
 			data: data,
 			beforeSend: function(){
-				preloader();
+				if(typeof this.preloader == "function")
+					preloader();
 			},
 			success: function(response){
-				response = integrityChecker(response, data)
-				if(!response)
-					return
+				// response = integrityChecker(response, data)
+				// if(!response)
+				// 	return
         
 				this.callback(response)
 				
@@ -48,9 +50,10 @@ class AJAX {
 			error: function(){
 				window['reportFailure'](data)
 			},
-      complete: function(){
-        preloader()
-      }
+			complete: function(){
+				if(typeof this.preloader == "function")
+					preloader();
+			}
 		}
 
 		if(data instanceof FormData){
@@ -58,5 +61,5 @@ class AJAX {
 			options.processData = false;
 		}
 		$.ajax(options)
-  }
+  	}
 }
