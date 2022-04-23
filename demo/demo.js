@@ -57,5 +57,25 @@ function loadForm3(){
 }
 
 function addToList1(){
-    $("[new=list1] [name]")
+    $("[new=list1] [name]").each(function(i, input){
+        $("[list=list1]").append(`
+        <span name="`+$(input).attr('name')+`">`+$(input).val()+`</span>
+        `)
+    })
+}
+
+function addToList2(){
+    $("[new=list2] [name]").each(function(i, input){
+        $("[list=list2]").append(`
+        <span name="`+$(input).attr('name')+`">`+$(input).val()+`</span>
+        `)
+    })
+}
+
+function addToList3(){
+    $("[new=list3] [name]").each(function(i, input){
+        $("[list=list3]").append(`
+        <span name="`+$(input).attr('name')+`">`+$(input).val()+`</span>
+        `)
+    })
 }

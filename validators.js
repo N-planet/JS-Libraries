@@ -28,7 +28,7 @@ class Validators {
         }.bind(this, validator))
       }
     }
-    $(container).find('[name]').not("[list] [name]").each(newValidator.bind(this))
+    $(container).find('[name]').each(newValidator.bind(this))
   }
 
   validateAll(){

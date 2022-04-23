@@ -25,12 +25,12 @@ Here are all forms and their mechanisms :-
 1. real-time validation 
 2. sending all form data by AJAX
 
-* ***Editable Form***: 
+* ***Simple-Editable Form***: 
 1. real-time validation
 2. track changes made to this form 
 3. send only these changes
 
-* ***Collection Form***:
+* ***List-Editable Form***:
 1. real-time validation
 2. track changes made to this form 
 3. send only these changes
@@ -47,29 +47,35 @@ This form suits the case that you provide an empty form that is to be filled by 
 
 Here are the procedures to create this form
 
-1. Create a form element with the following attibutes:
+1. Add [form_type] attribute to specify type of this form
 > &nbsp;form_type="simple" 
 
-
+2. Add [api] attribute to specify the url of the endpoint to communicate with
 > &nbsp;api="path/to/api"
-
-api is used for identifying the location of the api
-
+3. Add [callback] which is a pointer to some function expecting a response parameter that handles the response and performs some custom logic
 > &nbsp;callback="some_function"
+4. Callback Function Definition (Normal function that is called **AUTOMATICALLY** after the response is received)
+> `function some_function(response){
+>  // Handle server response here
+> }`
+5. Add input fields to the form each with [name] attribute to be tracked and sent by the library
+> `<input name="field">`
 
-callback is the function that handles the response of the ajax request
+6. To validate inputs, view the validator's readme
 
-2. To validate inputs, view the validator's readme
+7. The form element must contain a clickable element with [submit=<form_id>] attribute that sends the ajax request
+> `<anyelement submit="form_id"></anyelement>`
+Note that if anyelement is a button then it must have [type="button"] attribute
 
-3. The form element must contain a clickable element with [submit] attribute that sends the ajax request
+8. In order to view validation messages, add anyelement with attribute [alert="form_id"]
+> `<anyelement alert="form_id"></anyelement>`
 
-4. All inputs that need to be sent to the api must have [name] attributes
+<br>
 
-> id="alert-all" 
-5. the form must contain an element with this id to hold the validation error messages
+Don't Forget to call initializeForms function to run the library on the constructed forms
+-----
 
-6. Optional: it is better to add id attribute for each form element uses this library as this provides form access from outside the library.
-See window.initializeForms at form.js
+<br>
 
 >>> **Editable Form**
 
@@ -79,16 +85,30 @@ Procedures to create an editable form is the same as that of the simple one with
 
 1. form_type="editable"
 
-2. Form editing is disabled by default till it is enabled. Accordingly, the form must contain an element with the attribute [toggle_enable] that toggles status onclick
+2. Add attribute [load="some_function"] that loads the form data to be set as form's original data. When you apply changes to the form, the library compares the final state to the original one to detect the changes made and send them to the api
+
+3. Form editing is disabled by default till it is enabled. Accordingly, the form must contain an element with the attribute [toggle_enable] that toggles status onclick
 > `<p class="edit-btn badge valign" toggle_enable>Edit&nbsp;<i class="bi bi-pencil"></i></p>`
 
-#TODO: Make this element flexible
+4. After changing what you need, you must disable the form again by clicking on commit button that finally validates changes and shows the decision container. Accordingly, Decision container must be found.
 
-3. After changing what you need, you must disable the form again by clicking on commit button that finally validates changes and shows the decision container. Accordingly, Decision container must be found.
+5. This library can track file inputs but it requires that you **hide that input** and **add `<button type="button" onclick="$(this).prev().click()">Selected File</button>`** and update that button on the "change" event of the file input
 
-> container with id="decision" containing two elements, one is a button having the type="reset" that is used to revert changes and other having [submit] attribute. <br> This container must have class hidden by default
+> `<input type="file" name="field-name" onchange="$(this).next().html($(this)[0].files[0].name)">`
+> <br>
+> `<button type="button" onclick="$(this).prev().click()">Selected File</button>`
 
-#TODO allow the revert element to be anything (not a button)
+In short, the library tracks the value stored inside the `<button>` not the input file as it is simpler
+
+<br>
+
+Decision Container Contains the submit button only (for now!)
+
+> `<container><anyelement submit="form_id"></container>`
+
+6. This form_type tracks the inputs and determines the changes applited to it, but you might want to send some inputs even if they didn't change (ex: name="action" fields). In this case just add [essential] attribute to the input that neglects changes and just add it directly to the payload
+
+***Important Note: File inputs cannot be essential***
 
 <br>
 

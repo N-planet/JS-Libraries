@@ -8,14 +8,15 @@ class List {
     this.title = $(container).attr('id')
     
     this.new = $('[new='+$(this.list).attr('list')+']') // New collection container
-    this.validators = new Validators(container)
+    this.validators = new Validators(this.new)
 
     this.add = $('[add='+$(this.list).attr('list')+']') // Add collection btn
     this.addFn = window[$(this.add).attr('function')] // Add collection function
+    console.log(this.addFn)
+    this.newly_added = -1
     $(this.add).click(function(){
       if(this.validators.validateAll()){
-        let id = "new-"+String(++this.count_added)
-        this.addFn(id)
+        this.addFn()
       }
     }.bind(this))
   }

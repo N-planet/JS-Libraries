@@ -39,3 +39,8 @@ form{
     margin: 0 20px 0px 0px;
     cursor: pointer;
 }
+
+.lists {
+    display:flex;
+    justify-content: space-around;
+}
