@@ -23,8 +23,12 @@ class Validator {
          * Validator Initialization
          */
         this.input = input
-        this.fieldName = $(this.input).attr('name').replaceAll('_', ' ')
-        this.fieldName = this.fieldName.charAt(0).toUpperCase() + this.fieldName.substr(1)
+        if($(this.input)[0].hasAttribute('confirm'))
+            this.fieldName = $(this.input).attr('confirm') + " confirmation"
+        else{
+            this.fieldName = $(this.input).attr('name').replaceAll('_', ' ')
+            this.fieldName = this.fieldName.charAt(0).toUpperCase() + this.fieldName.substr(1)
+        }
     }
 
     run(){
@@ -68,7 +72,7 @@ class Validator {
 
         else if($(this.input)[0].hasAttribute("confirm")){
             // Confirmational Validator
-            let original = $("#"+$(input).attr("confirm")).val().trim()
+            let original = $("#"+$(this.input).attr("confirm")).val().trim()
             if(input != original){
                 return 5 // Not Matching Code
             }
