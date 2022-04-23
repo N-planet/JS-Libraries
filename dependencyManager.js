@@ -5,7 +5,7 @@ class Manager{
    */
   constructor(){
     let folders  = $("script[src]").last().attr('src').split('/')
-    this.root = folders[folders.length - 2]
+    this.root = folders.slice(0, folders.length - 1).join('/') 
     this.dependencies = []
   }
 

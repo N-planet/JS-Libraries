@@ -12,8 +12,7 @@ class List {
 
     this.add = $('[add='+$(this.list).attr('list')+']') // Add collection btn
     this.addFn = window[$(this.add).attr('function')] // Add collection function
-    console.log(this.addFn)
-    this.newly_added = -1
+    this.count_added = -1
     $(this.add).click(function(){
       if(this.validators.validateAll()){
         this.addFn()
