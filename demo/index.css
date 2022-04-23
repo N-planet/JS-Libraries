@@ -1,0 +1,20 @@
+p.hint {
+    color: green;
+    text-align: center;
+}
+
+.result {
+    padding: 20px;
+    background: #d7d7d7;
+    margin: 20px;
+}
+
+.result h3 {
+    margin:0 0 20px;
+}
+
+.payload {
+    border: 1px solid;
+    min-height: 50px;
+    text-align: left;
+}

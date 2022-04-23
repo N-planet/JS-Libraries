@@ -4,30 +4,63 @@ class AJAX {
 	this.api = $(form).attr('api')
 	this.type = $(form).attr('request_type')
 	this.callback = window[$(form).attr('callback')]
-	this.preloader = typeof preloader == "function" ? window['prelaoder'] : null
+	this.preloader = typeof preloader == "function" ? window['prelaoder'] : AJAX.preloader
+	this.reportFailure = typeof reportFailure == "function" ? reportFailure : AJAX.reportFailure
+	this.integrityChecker = typeof integrityChecker == "function" ? intergrityChecker : AJAX.integrityChecker
+	}
+
+	static preloader(){
+		/**
+		 * TODO
+		 */
+		let loader = $(this.form).find('span.form-loading')
+		if(loader.length)
+			$(loader).remove()
+		else 
+			$(this.form).append(`
+				<span class="form-loading">Loading ...</span>
+			`)
+	}
+
+	static reportFailure(){
+		alert("Something Went Wrong!")
+	}
+
+	static integrityChecker(response, data){
+		response = typeof response !== "string" ? JSON.stringify(response) : response;
+
+		try {
+		  response = JSON.parse(response);
+		} catch (e) {
+		  // Silence
+		}
+	  
+		if (typeof response === "object" && response !== null)  // Not System Failure
+		  return response;
+		
 	}
 
 	getData(){
 		/**
 		 * Collect the filled data in the suitable data structure
 		 */
-	let form_data = new FormData(this.form);
-	if($(this.form).find('input[type=file]'))
-		return form_data;
+		let form_data = new FormData(this.form);
+		if($(this.form).find('input[type=file]'))
+			return form_data;
 
-	let data_object = {};
-	form_data.forEach(function(value, key){
-		data_object[key] = value;
-	});
-	return data_object
+		let data_object = {};
+		form_data.forEach(function(value, key){
+			data_object[key] = value;
+		});
+		return data_object
 	}
 
 	submit(){
-	/**
-	 * Send filled data
-	 */
-	let data = this.getData()
-	this.send(data)
+		/**
+		 * Send filled data
+		 */
+		let data = this.getData()
+		this.send(data)
 	}
 
   	send(data){
@@ -36,23 +69,21 @@ class AJAX {
 			type: this.type,
 			data: data,
 			beforeSend: function(){
-				if(typeof this.preloader == "function")
-					preloader();
+				this.preloader();
 			},
 			success: function(response){
-				// response = integrityChecker(response, data)
-				// if(!response)
-				// 	return
+				response = this.integrityChecker(response, data)
+				if(!response)
+					return
         
 				this.callback(response)
 				
 			}.bind(this),
 			error: function(){
-				window['reportFailure'](data)
+				this.reportFailure()
 			},
 			complete: function(){
-				if(typeof this.preloader == "function")
-					preloader();
+				this.preloader();
 			}
 		}
 
