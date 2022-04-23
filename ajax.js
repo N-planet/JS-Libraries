@@ -3,10 +3,10 @@ class AJAX {
 	this.form = form
 	this.api = $(form).attr('api')
 	this.type = $(form).attr('request_type')
-	this.callback = window[$(form).attr('callback')]
-	this.preloader = typeof preloader == "function" ? window['prelaoder'] : AJAX.preloader
+	this.preloader = typeof preloader == "function" ? window['preloader'] : AJAX.preloader.bind(this)
 	this.reportFailure = typeof reportFailure == "function" ? reportFailure : AJAX.reportFailure
 	this.integrityChecker = typeof integrityChecker == "function" ? intergrityChecker : AJAX.integrityChecker
+	this.callback = window[$(form).attr('callback')]
 	}
 
 	static preloader(){
@@ -27,17 +27,7 @@ class AJAX {
 	}
 
 	static integrityChecker(response, data){
-		response = typeof response !== "string" ? JSON.stringify(response) : response;
-
-		try {
-		  response = JSON.parse(response);
-		} catch (e) {
-		  // Silence
-		}
-	  
-		if (typeof response === "object" && response !== null)  // Not System Failure
-		  return response;
-		
+		return response
 	}
 
 	getData(){
@@ -70,7 +60,7 @@ class AJAX {
 			data: data,
 			beforeSend: function(){
 				this.preloader();
-			},
+			}.bind(this),
 			success: function(response){
 				response = this.integrityChecker(response, data)
 				if(!response)
@@ -81,10 +71,10 @@ class AJAX {
 			}.bind(this),
 			error: function(){
 				this.reportFailure()
-			},
+			}.bind(this),
 			complete: function(){
 				this.preloader();
-			}
+			}.bind(this)
 		}
 
 		if(data instanceof FormData){

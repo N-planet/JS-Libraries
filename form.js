@@ -1,4 +1,4 @@
-manager.import(["simpleForm.js", "editableForm.js"])
+manager.import(["simpleForm.js", "simpleEditable.js", "listEditable.js"])
 
 class Form {
   static new(form){
@@ -6,8 +6,10 @@ class Form {
     switch(type){
       case 'simple':
         return new SimpleForm(form)
-      case 'editable':
-        return new EditableForm(form)
+      case 'simple-editable':
+        return new SimpleEditable(form)
+      case 'list-editable':
+        return new ListEditable(form)
       default: 
         throw "Form Creation Error: Unknown form type"
     }

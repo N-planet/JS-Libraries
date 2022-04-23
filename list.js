@@ -8,7 +8,6 @@ class List {
     this.title = $(container).attr('id')
     
     this.new = $('[new='+$(this.list).attr('list')+']') // New collection container
-    $(this.new).addClass('hidden')
     this.validators = new Validators(container)
 
     this.add = $('[add='+$(this.list).attr('list')+']') // Add collection btn
@@ -18,15 +17,27 @@ class List {
         let id = "new-"+String(++this.count_added)
         this.addFn(id)
       }
-      else
-        Swal.fire({
-          title: 'Validation Error!',
-          text: "Please Fix The Errors Before Adding",
-          icon: 'warning'
-        })
     }.bind(this))
+  }
 
-    this.update()
+  findInOriginals(collection_id){
+    let index = 0
+    for(let id in this.originals){
+      if(id == collection_id)
+        return index
+      index++
+    }
+    return -1
+  }
+
+  enable(){
+    $(this.list).find('[remove]').removeClass('hidden')
+    $(this.new).removeClass('hidden')
+  }
+
+  disable(){
+    $(this.list).find('[remove]').addClass('hidden')
+    $(this.new).addClass('hidden')
   }
 
   update(){
@@ -36,8 +47,26 @@ class List {
     this.originals = []
     $(this.list).find('[collection_id]').each(function(i, collection){
       this.originals.push($(collection).attr('collection_id'))
-    })
+    }.bind(this))
     this.count_added = 0
+  }
+
+  isChanged(){
+    let changed = false
+    $(this.list).find('[collection_id]').each(function(i, collection){
+      let collection_id = $(collection).attr('collection_id')
+      let index = this.findInOriginals(collection_id)
+      if(index != -1) this.originals.splice(index, 1) // Collection not changed
+      else {
+        // New collection is added
+        changed = true
+        return false
+      }
+    }.bind(this))
+    if(!changed && this.originals.length){
+      changed = true
+    }
+    return changed
   }
 
   compare(){

@@ -18,3 +18,24 @@ p.hint {
     min-height: 50px;
     text-align: left;
 }
+
+.hidden {
+    display:none;
+}
+
+hr {
+    margin: 50px 0;
+}
+
+form{
+    position: relative;
+}
+
+[toggle_enable] {
+    color: blue;
+    display: inline-block;
+    text-decoration: underline;
+    float: right;
+    margin: 0 20px 0px 0px;
+    cursor: pointer;
+}

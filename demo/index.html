@@ -5,10 +5,12 @@
     <body>
         <p class="hint">All the following forms allow only alphanumericals and white spaces (You can customize the regex as you like in your site)</p>
 
-        <h2>Library applies dynamic forms interaction and control using AJAX and jQuery by adding simple HTML atributes</h2>
+        <h4>Library applies dynamic forms interaction and control using AJAX and jQuery by adding simple HTML atributes</h4>
 
         <h1> Simple Form Example </h1>
-        <p>HTML Only form submission and handling response using ajax</p>
+        <h4>Features:</h4>
+        <p>
+            Validation, AJAX request and handling response using custom function</p>
         <form id="form1" form_type="simple" api="https://team.nplanet.org/demo.php" request_type="POST" callback="simpleTest">
             <input name="field1" placeholder="Required Field" must regex="^[a-zA-Z0-9 ]*$">
             <input name="field2" placeholder="Optional Field" regex="^[a-zA-Z0-9 ]*$">
@@ -21,9 +23,79 @@
             <div id="simple-form-result" class="payload"></div>
         </div>
 
-        <h1> Eitable Form Example </h1>
-        <p>HTML Only form submission and handling response using ajax</p>
-        
+        <hr>
+
+        <h1> Editable Form Example </h1>
+        <h4>Features:</h4>
+        <p>
+            Status Toggling, Validation, Tracking fields to send changes only (essential fields are always sent even if they are not changed), and handling response using custom function
+        </p>
+
+        <form id="form2" form_type="simple-editable" api="https://team.nplanet.org/demo.php" request_type="POST" load="loadForm2" callback="editableTest">
+            <p toggle_enable style="pointer-events: none;">Edit&nbsp;<i class="bi bi-pencil"></i></p>
+            <input name="essentialField1" disabled value="essentialValue1" essential>
+            <input name="essentialField2" class="hidden" value="essentialValue2" essential>
+            <input name="field3" placeholder="Required Field" must regex="^[a-zA-Z0-9 ]*$">
+            <input name="field4" placeholder="Optional Field" regex="^[a-zA-Z0-9 ]*$">
+            <input name="field5" onchange="displayFile(this)" type="file" class="hidden">
+            <button type="button" onclick="$(this).prev().click()">Selected File</button>
+            <p alert="form2"></p>
+            <div decision>
+                <button type="button" submit="form2">Submit Form2</button>
+            </div>
+        </form>
+
+        <div class="result">
+            <h3>Payload</h3>
+            <div id="editable-form-result" class="payload"></div>
+        </div>
+
+        <hr>
+
+        <h1> List Form Example </h1>
+        <h4>Features:</h4>
+        <p>
+            Status Toggling, Validation, Tracking Collections to send only added/removed collections (essential fields are always sent), and handling response using custom function
+        </p>
+        <form id="form3" form_type="list-editable" api="https://team.nplanet.org/demo.php" request_type="POST" load="loadForm3" callback="listTest">
+            <p toggle_enable style="pointer-events: none;">Edit&nbsp;<i class="bi bi-pencil"></i></p>
+            <div list="list1">
+                <h4>List 1</h4>
+            </div>
+            <div list="list2">
+                <h4>List 2</h4>
+            </div>
+            <div list="list3">
+                <h4>List 3</h4>
+            </div>
+
+            <div new="list1">
+                <h4>Add new element to list 1</h4>
+                <input name="field1" placeholder="required" must regex="^[a-zA-Z0-9 ]*$">
+                <input name="field2" placeholder="optional" regex="^[a-zA-Z0-9 ]*$">
+                <input name="field3" placeholder="required" must regex="^[a-zA-Z0-9 ]*$">
+                <p alert="list1"></p>
+                <button add="list1" addFn="addToList1">Add To List 1</button>
+            </div>
+            <div new="list2">
+                <h4>Add new element to list 2</h4>
+                <input name="field1" placeholder="optional" regex="^[a-zA-Z0-9 ]*$">
+                <input name="field2" placeholder="required" must regex="^[a-zA-Z0-9 ]*$">
+                <input name="field3" placeholder="required" must regex="^[a-zA-Z0-9 ]*$">
+                <p alert="list2"></p>
+                <button add="list2" addFn="addToList2">Add To List 2</button>
+            </div>
+            <div new="list3">
+                <h4>Add new element to list 3</h4>
+                <input name="field1" placeholder="rqeuired" must regex="^[a-zA-Z0-9 ]*$">
+                <input name="field2" placeholder="rqeuired" must regex="^[a-zA-Z0-9 ]*$">
+                <input name="field3" placeholder="required" must regex="^[a-zA-Z0-9 ]*$">
+                <p alert="list3"></p>
+                <button add="list3" addFn="addToList3">Add To List 3</button>
+            </div>
+
+        </form>
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="../dependencyManager.js"></script>
         <script>

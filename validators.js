@@ -37,7 +37,6 @@ class Validators {
 		 */
 		for(let validator of this.validators){
 			let err = validator.run()
-			console.log(err)
 			this.showMsg(validator, err)
 			if(err)
 				return false
@@ -49,7 +48,6 @@ class Validators {
     /**
      * Display Error
      */
-		console.log("Showing Message")
 		let text = validator.fieldName+" Error: "
 		switch(err){
 			case 1:
