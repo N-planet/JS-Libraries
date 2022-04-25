@@ -5,42 +5,52 @@ class List {
    */
   constructor(container){
     this.list = container
-    this.title = $(container).attr('id')
-    
-    this.new = $('[new='+$(this.list).attr('list')+']') // New collection container
-    this.validators = new Validators(this.new)
+    this.initialize() // title, new, add, addFn
 
+    $(this.add).click(this.applyAdd.bind(this))
+  }
+
+  initialize(){
+    this.title = $(this.list).attr('list')
+    this.new = $('[new='+$(this.list).attr('list')+']') // New collection container
     this.add = $('[add='+$(this.list).attr('list')+']') // Add collection btn
     this.addFn = window[$(this.add).attr('function')] // Add collection function
-    this.count_added = -1
-    $(this.add).click(function(){
-      if(this.validators.validateAll()){
-        this.addFn()
-      }
-    }.bind(this))
+
+    this.validators = new Validators(this.new)
+    this.next_id = -1
+
+    $(this.list).find('[remove]').click(function(){
+      $(this).parents('[collection_id]').remove()
+    })
   }
 
-  findInOriginals(collection_id){
-    let index = 0
-    for(let id in this.originals){
-      if(id == collection_id)
-        return index
-      index++
+  applyAdd(){
+    if(this.validators.validateAll()){
+      this.addFn()
+      $(this.list).find('[collection_id] [remove]').click(function(i, removeBtn){
+        $(removeBtn).parents('[collection_id]').remove()
+      })
+      this.next_id--;
     }
-    return -1
   }
 
-  enable(){
+  showActions(){
+    /**
+     * Show list edit tools
+     */
     $(this.list).find('[remove]').removeClass('hidden')
     $(this.new).removeClass('hidden')
   }
 
-  disable(){
+  hideActions(){
+    /**
+     * Hide list edit tools
+     */
     $(this.list).find('[remove]').addClass('hidden')
     $(this.new).addClass('hidden')
   }
 
-  update(){
+  setOriginals(){
     /**
      * Identify existing collections before any change
      */
@@ -48,24 +58,27 @@ class List {
     $(this.list).find('[collection_id]').each(function(i, collection){
       this.originals.push($(collection).attr('collection_id'))
     }.bind(this))
-    this.count_added = 0
   }
 
   isChanged(){
+    /**
+     * check if there are any added or remove collections to the list
+     */
     let changed = false
+    let temp = [...this.originals]
     $(this.list).find('[collection_id]').each(function(i, collection){
       let collection_id = $(collection).attr('collection_id')
-      let index = this.findInOriginals(collection_id)
-      if(index != -1) this.originals.splice(index, 1) // Collection not changed
+      let index = temp.indexOf(String(collection_id))
+      if(index != -1) temp.splice(index, 1) // Collection not changed
       else {
         // New collection is added
         changed = true
         return false
       }
     }.bind(this))
-    if(!changed && this.originals.length){
+    if(!changed && temp.length)
       changed = true
-    }
+    
     return changed
   }
 
@@ -78,19 +91,18 @@ class List {
     let temp = [...this.originals]
     $(this.list).find('[collection_id]').each(function(i, collection){
       let collection_id = $(collection).attr('collection_id')
-      let index = this.findInOriginals(collection_id)
-      if(index != -1) this.originals.splice(index, 1) // Collection not changed
+      let index = temp.indexOf(String(collection_id))
+      if(index != -1) temp.splice(index, 1) // Collection not changed
       else {
         // New collection is added
         added.push({...List.readCollection(collection)})
       }
     }.bind(this))
 
-    for (let i = 0; i < this.originals.length; i++) {
+    for (let i = 0; i < temp.length; i++)
       // Removed Collections
-      removed.push({'_id': this.originals[i]})
-    }
-    this.originals = [...temp]
+      removed.push({'_id': temp[i]})
+    
     return {'add':added, 'remove':removed}
   }
 

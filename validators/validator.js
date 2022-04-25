@@ -72,7 +72,7 @@ class Validator {
 
         else if($(this.input)[0].hasAttribute("confirm")){
             // Confirmational Validator
-            let original = $("#"+$(this.input).attr("confirm")).val().trim()
+            let original = $(this.input).parents('form').find("input[name="+$(this.input).attr("confirm")+"]").val().trim()
             if(input != original){
                 return 5 // Not Matching Code
             }

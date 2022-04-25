@@ -3,6 +3,7 @@ class AJAX {
 	this.form = form
 	this.api = $(form).attr('api')
 	this.type = $(form).attr('request_type')
+
 	this.preloader = typeof preloader == "function" ? window['preloader'] : AJAX.preloader.bind(this)
 	this.reportFailure = typeof reportFailure == "function" ? reportFailure : AJAX.reportFailure
 	this.integrityChecker = typeof integrityChecker == "function" ? intergrityChecker : AJAX.integrityChecker
@@ -53,7 +54,7 @@ class AJAX {
 		this.send(data)
 	}
 
-  	send(data){
+  send(data){
 		let options = {
 			url: this.api,
 			type: this.type,
@@ -82,5 +83,5 @@ class AJAX {
 			options.processData = false;
 		}
 		$.ajax(options)
-  	}
+  }
 }

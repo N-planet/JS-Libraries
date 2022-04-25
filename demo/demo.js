@@ -36,8 +36,7 @@ function editableTest(response){
      * Callback
      */
     $("#editable-form-result").html(response);
-    let form_id = $(this.form).attr('id')
-    forms[form_id].update()
+    forms[$(this.form).attr('id')].update()
 }
 
 function loadForm3(){
@@ -48,6 +47,7 @@ function loadForm3(){
         for(let collection = 1; collection < 4; collection++)
             $("#form3 [list=list"+list+"]").append(`
                 <div collection_id=`+collection+`>
+                    <button type="button" remove>X</button>
                     <span>Collection: </span>
                     <span name="field1">val`+collection+`</span>
                     <span name="field2">val`+(2*collection)+`</span>
@@ -62,7 +62,7 @@ function addToList1(){
      * then add the collection elements to it
      */
     $("[list=list1]").append(`
-        <div collection_id="`+this.count_added+`">Collection: </div>
+        <div collection_id="`+this.count_added+`"><button type="button" remove>X</button> Collection: </div>
     `)
     $("[new=list1] [name]").each(function(i, input){
         $("[list=list1] [collection_id]").last().append(`
@@ -75,14 +75,14 @@ function addToList1(){
 function addToList2(){
     /**
      * Add new collection to list 2
-     * then add the collection elements to it
+     * then add the collection elements to it   
      */
     $("[list=list2]").append(`
-        <div collection_id="`+this.count_added+`">Collection: </div>
+        <div collection_id="`+this.count_added+`"><button type="button" remove>X</button> Collection: </div>
     `)
     $("[new=list2] [name]").each(function(i, input){
         $("[list=list2] [collection_id]").last().append(`
-        <span name="`+$(input).attr('name')+`">`+$(input).val()+`</span>
+            <span name="`+$(input).attr('name')+`">`+$(input).val()+`</span>
         `)
     })
     this.count_added++;
@@ -94,12 +94,19 @@ function addToList3(){
      * then add the collection elements to it
      */
     $("[list=list3]").append(`
-        <div collection_id="`+this.count_added+`">Collection: </div>
+        <div collection_id="`+this.next_id+`"><button type="button" remove>X</button> Collection: </div>
     `)
     $("[new=list3] [name]").each(function(i, input){
         $("[list=list3] [collection_id]").last().append(`
         <span name="`+$(input).attr('name')+`">`+$(input).val()+`</span>
         `)
     })
-    this.count_added++;
+}
+
+function listTest(response){
+    /**
+     * List Form Callback
+     */
+    $("#list-form-result").html(response);
+    forms[$(this.form).attr('id')].update()
 }

@@ -29,12 +29,14 @@ This validator matches the input to a desired regex pattern and displays errors 
 
 5. This library assumes that all inputs show tips on hover
 
+
+
 <br>
 
 * ***Confirmational Validator***
 > Just checks that this field is congruent to another one
 
-Just add confirm="id_of_the_field_to_be_confirmed"
+Just add confirm="name_attribute_of_the_field_to_be_confirmed"
 instead of regex="pattern"
 
 > **Fields without both regex and confirm attributes are neglected**

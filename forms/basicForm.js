@@ -1,6 +1,6 @@
-manager.import(["validators.js", "ajax.js"])
+manager.import(["validators/validators.js", "forms/utils/ajax.js"])
 
-class SimpleForm {
+class BasicForm {
 	/**
 	 * class for basic form flow (validation, data extraction, and ajax requesting)
 	 */

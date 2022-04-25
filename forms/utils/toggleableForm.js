@@ -1,6 +1,6 @@
-manager.import(["validators.js", "ajax.js"])
+manager.import(["forms/ajax.js"])
 
-class EditableForm {
+class ToggleableForm {
   /**
    * Editable Form that tracks filled data and extracts changes made to it then sends it to the back-end
    */
@@ -10,21 +10,21 @@ class EditableForm {
 		*/
 		this.form = form
     this.title = $(this.form).attr('id')
-		this.validators = new Validators(form)
+    this.validators = null;
 		this.ajax = new AJAX(form)
 		this.submitBtn = $("[submit="+$(this.form).attr('id')+"]")
 		$(this.submitBtn).attr('type', 'button')
 		$(this.submitBtn).click(this.run.bind(this))
 
-    // Editable Section
+    // load form initial data
     if($(this.form)[0].hasAttribute('load'))
       window[$(this.form).attr('load')]()
 
+    // Toggling belongings
     this.enabled = false
     this.changed = false
     this.decision = $(this.form).find('[decision]')
     this.toggleBtn = $(this.form).find('[toggle_enable]')
-
     $(this.toggleBtn).css("pointer-events", "auto")
     this.toggleBtn.click(this.toggle.bind(this))
   }
@@ -37,10 +37,12 @@ class EditableForm {
 
   toggle(){
     if (this.enabled){
-      if(this.validators.validateAll())
+      if(this.validators === null || this.validators.validateAll())
         this.disable()
     }
-    else this.enable();
+
+    else
+      this.enable();
   }
 
   enable(){
@@ -67,7 +69,6 @@ class EditableForm {
       $(this.decision).addClass('hidden')
     else 
       $(this.decision).removeClass('hidden')
-
     this.disableFields() // implemented in subclass
     this.toggleBtn.html(`
       Edit&nbsp;<i class="bi bi-pencil"></i>

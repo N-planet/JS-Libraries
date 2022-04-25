@@ -11,8 +11,9 @@
         <h4>Features:</h4>
         <p>
             Validation, AJAX request and handling response using custom function</p>
-        <form id="form1" form_type="simple" api="https://team.nplanet.org/demo.php" request_type="POST" callback="simpleTest">
+        <form id="form1" form_type="basic" api="https://team.nplanet.org/demo.php" request_type="POST" callback="simpleTest">
             <input name="field1" placeholder="Required Field" must regex="^[a-zA-Z0-9 ]*$">
+            <input confirm="field1" placeholder="retype field1">
             <input name="field2" placeholder="Optional Field" regex="^[a-zA-Z0-9 ]*$">
             <p alert="form1"></p>
         </form>
@@ -31,7 +32,7 @@
             Status Toggling, Validation, Tracking fields to send changes only (essential fields are always sent even if they are not changed), and handling response using custom function
         </p>
 
-        <form id="form2" form_type="simple-editable" api="https://team.nplanet.org/demo.php" request_type="POST" load="loadForm2" callback="editableTest">
+        <form id="form2" form_type="editable" api="https://team.nplanet.org/demo.php" request_type="POST" load="loadForm2" callback="editableTest">
             <p toggle_enable style="pointer-events: none;">Edit&nbsp;<i class="bi bi-pencil"></i></p>
             <input name="essentialField1" disabled value="essentialValue1" essential>
             <input name="essentialField2" class="hidden" value="essentialValue2" essential>
@@ -57,8 +58,14 @@
         <p>
             Status Toggling, Validation, Tracking Collections to send only added/removed collections (essential fields are always sent), and handling response using custom function
         </p>
-        <form id="form3" form_type="list-editable" api="https://team.nplanet.org/demo.php" request_type="POST" load="loadForm3" callback="listTest">
+        <form id="form3" form_type="list" api="https://team.nplanet.org/demo.php" request_type="POST" load="loadForm3" callback="listTest">
             <p toggle_enable style="pointer-events: none;">Edit&nbsp;<i class="bi bi-pencil"></i></p>
+            <input name="essentialField1" essential value="essentialValue1">
+            <input name="essentialField2" essential value="essentialValue2">
+            <input name="essentialField3" essential value="essentialValue3">
+
+            <br>
+            
             <div class="lists">
                 <div list="list1">
                     <h4>List 1</h4>
@@ -95,13 +102,20 @@
                 <p alert="list3"></p>
                 <button type="button" add="list3" function="addToList3">Add To List 3</button>
             </div>
-
+            <div decision>
+                <button type="button" submit="form3">Submit Form3</button>
+            </div>
         </form>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <div class="result">
+            <h3>Payload</h3>
+            <div id="list-form-result" class="payload"></div>
+        </div>
+
+        <script src="jquery-3.6.0.min.js"></script>
         <script src="../dependencyManager.js"></script>
         <script>
-            manager.import(["form.js", "demo/demo.js"])
+            manager.import(["forms/form.js", "demo/demo.js"])
         </script>
     </body>
 </html> 

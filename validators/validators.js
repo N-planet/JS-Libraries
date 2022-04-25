@@ -1,4 +1,4 @@
-manager.import(["validator.js"])
+manager.import(["validators/validator.js"])
 
 class Validators {
   /**
@@ -10,7 +10,10 @@ class Validators {
      * Initialization
      */
     this.initializeValidators(container)
-    this.msgContainer = $("[alert="+$(container).attr('id')+"]")
+		if($(container)[0].hasAttribute('list'))
+			this.msgContainer = $("[alert="+$(container).attr('list')+"]")
+		else
+    	this.msgContainer = $("[alert="+$(container).attr('id')+"]")
   }
 
   initializeValidators(container){
@@ -28,7 +31,7 @@ class Validators {
         }.bind(this, validator))
       }
     }
-    $(container).find('[name]').each(newValidator.bind(this))
+    $(container).find('input').each(newValidator.bind(this))
   }
 
   validateAll(){

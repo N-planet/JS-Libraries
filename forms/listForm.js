@@ -1,6 +1,6 @@
-manager.import(["list.js", "editableForm.js"])
+manager.import(["forms/utils/list.js", "forms/utils/toggleableForm.js"])
 
-class ListEditable extends EditableForm {
+class ListForm extends ToggleableForm {
   /**
    * List Form that tracks available collections and extracts added and removed ones then send them to the back-end
    */
@@ -10,7 +10,6 @@ class ListEditable extends EditableForm {
      */
     super(form)
     this.initializeLists()
-    this.update()
   }
 
   initializeLists(){
@@ -22,26 +21,28 @@ class ListEditable extends EditableForm {
       let tmp = new List(list)
       this.lists.push(tmp)
     }.bind(this))
+
+    this.update()
   }
 
   update(){
     /**
      * update list originals
      */
-    this.lists.forEach(function(list, i){
-      list.update()
-    })
+    for(let list of this.lists){
+      list.setOriginals()
+    }
     this.disable()
   }
 
   enableFields(){
     for(let list of this.lists)
-      list.enable()
+      list.showActions()
   }
 
   disableFields(){
     for(let list of this.lists)
-      list.disable()
+      list.hideActions()
   }
 
   isChanged(){

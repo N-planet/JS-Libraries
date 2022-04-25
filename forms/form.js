@@ -1,15 +1,16 @@
-manager.import(["simpleForm.js", "simpleEditable.js", "listEditable.js"])
+manager.import(["forms/basicForm.js", "forms/editableForm.js", "forms/listForm.js"])
 
 class Form {
   static new(form){
     let type = $(form).attr('form_type')
     switch(type){
+      case 'basic':
       case 'simple':
-        return new SimpleForm(form)
-      case 'simple-editable':
-        return new SimpleEditable(form)
-      case 'list-editable':
-        return new ListEditable(form)
+        return new BasicForm(form)
+      case 'editable':
+        return new EditableForm(form)
+      case 'list':
+        return new ListForm(form)
       default: 
         throw "Form Creation Error: Unknown form type"
     }
