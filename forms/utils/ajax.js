@@ -1,13 +1,18 @@
 class AJAX {
 	constructor(form){
 	this.form = form
+	this.form_title = $(form).attr('id')
 	this.api = $(form).attr('api')
-	this.type = $(form).attr('request_type')
+	if(this.api === undefined)
+		console.log("api destination not found for "+this.form_title+" form")
+	this.type = $(form).attr('request_type') !== undefined ? $(form).attr('request_type') : 'GET'
+	this.callback = window[$(form).attr('callback')]
+	if(this.callback === undefined)
+		console.log("callback function not determined for "+this.form_title+" form")
 
 	this.preloader = typeof preloader == "function" ? window['preloader'] : AJAX.preloader.bind(this)
 	this.reportFailure = typeof reportFailure == "function" ? reportFailure : AJAX.reportFailure
 	this.integrityChecker = typeof integrityChecker == "function" ? intergrityChecker : AJAX.integrityChecker
-	this.callback = window[$(form).attr('callback')]
 	}
 
 	static preloader(){
@@ -31,6 +36,14 @@ class AJAX {
 		return response
 	}
 
+	submit(){
+		/**
+		 * Send filled data
+		 */
+		let data = this.getData()
+		this.send(data)
+	}
+
 	getData(){
 		/**
 		 * Collect the filled data in the suitable data structure
@@ -44,14 +57,6 @@ class AJAX {
 			data_object[key] = value;
 		});
 		return data_object
-	}
-
-	submit(){
-		/**
-		 * Send filled data
-		 */
-		let data = this.getData()
-		this.send(data)
 	}
 
   send(data){

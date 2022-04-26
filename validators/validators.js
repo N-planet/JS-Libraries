@@ -10,10 +10,16 @@ class Validators {
      * Initialization
      */
     this.initializeValidators(container)
-		if($(container)[0].hasAttribute('list'))
-			this.msgContainer = $("[alert="+$(container).attr('list')+"]")
-		else
+		if($(container)[0].hasAttribute('new')){
+			this.msgContainer = $("[alert="+$(container).attr('new')+"]")
+			if(!this.msgContainer.length)
+				console.log($(container).attr('new')+" alert container not found")
+		}
+		else{
     	this.msgContainer = $("[alert="+$(container).attr('id')+"]")
+			if(!this.msgContainer.length)
+				console.log($(container).attr('id')+" alert container not found")
+		}
   }
 
   initializeValidators(container){

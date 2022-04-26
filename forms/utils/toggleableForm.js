@@ -13,6 +13,8 @@ class ToggleableForm {
     this.validators = null;
 		this.ajax = new AJAX(form)
 		this.submitBtn = $("[submit="+$(this.form).attr('id')+"]")
+    if(!this.submitBtn.length)
+      console.log("submit btn not found for "+this.title+" form")
 		$(this.submitBtn).attr('type', 'button')
 		$(this.submitBtn).click(this.run.bind(this))
 
@@ -24,7 +26,11 @@ class ToggleableForm {
     this.enabled = false
     this.changed = false
     this.decision = $(this.form).find('[decision]')
+    if(!this.decision.length)
+      console.log("decision container not found for "+this.title+" form")
     this.toggleBtn = $(this.form).find('[toggle_enable]')
+    if(!this.toggleBtn.length)
+      console.log("toggle status btn not found for "+this.title+" form")
     $(this.toggleBtn).css("pointer-events", "auto")
     this.toggleBtn.click(this.toggle.bind(this))
   }

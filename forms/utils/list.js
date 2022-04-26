@@ -5,16 +5,20 @@ class List {
    */
   constructor(container){
     this.list = container
-    this.initialize() // title, new, add, addFn
 
-    $(this.add).click(this.applyAdd.bind(this))
-  }
-
-  initialize(){
     this.title = $(this.list).attr('list')
+
     this.new = $('[new='+$(this.list).attr('list')+']') // New collection container
+    if(!this.new.length)
+      console.log(this.title+" new container not found")
+
     this.add = $('[add='+$(this.list).attr('list')+']') // Add collection btn
+    if(!this.add.length)
+      console.log(this.title+" adding btn not found")
+
     this.addFn = window[$(this.add).attr('function')] // Add collection function
+    if(!this.addFn === undefined)
+      console.log(this.title+" adding function not found")
 
     this.validators = new Validators(this.new)
     this.next_id = -1
@@ -22,6 +26,8 @@ class List {
     $(this.list).find('[remove]').click(function(){
       $(this).parents('[collection_id]').remove()
     })
+
+    $(this.add).click(this.applyAdd.bind(this))
   }
 
   applyAdd(){
