@@ -5,14 +5,13 @@ class Form {
     let type = $(form).attr('form_type')
     switch(type){
       case 'basic':
-      case 'simple':
         return new BasicForm(form)
       case 'editable':
         return new EditableForm(form)
       case 'list':
         return new ListForm(form)
       default: 
-        throw "Form Creation Error: Unknown form type"
+        throw "Form Creation Error: Unknown form type.\nAvailable types are basic, editable, and list"
     }
   }
 }

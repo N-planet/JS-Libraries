@@ -12,7 +12,7 @@ class AJAX {
 
 	this.preloader = typeof preloader == "function" ? window['preloader'] : AJAX.preloader.bind(this)
 	this.reportFailure = typeof reportFailure == "function" ? reportFailure : AJAX.reportFailure
-	this.integrityChecker = typeof integrityChecker == "function" ? intergrityChecker : AJAX.integrityChecker
+	this.integrityChecker = typeof integrityChecker == "function" ? integrityChecker : AJAX.integrityChecker
 	}
 
 	static preloader(){

@@ -17,7 +17,7 @@ class List {
       console.log(this.title+" adding btn not found")
 
     this.addFn = window[$(this.add).attr('function')] // Add collection function
-    if(!this.addFn === undefined)
+    if(this.addFn === undefined)
       console.log(this.title+" adding function not found")
 
     this.validators = new Validators(this.new)
