@@ -64,8 +64,10 @@ class ListForm extends ToggleableForm {
       data_object[$(input).attr('name')] = $(input).val()
     })
 
-    for(let list of this.lists)
-      data_object.push(list.compare())
+    for(let list of this.lists){
+      let list_changes = list.compare()
+      data_object = {...data_object, ...list_changes}
+    }
     return data_object
   }
 
