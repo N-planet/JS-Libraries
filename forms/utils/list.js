@@ -109,7 +109,11 @@ class List {
       // Removed Collections
       removed.push({'_id': temp[i]})
     
-    return {'add':added, 'remove':removed}
+    result = {}
+    result[this.title+'-add'] = added
+    result[this.title+'-remove'] = removed
+
+    return result
   }
 
   static readCollection(collection){

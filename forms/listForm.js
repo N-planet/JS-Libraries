@@ -65,7 +65,7 @@ class ListForm extends ToggleableForm {
     })
 
     for(let list of this.lists)
-      data_object[list.title] = list.compare()
+      data_object.push(list.compare())
     return data_object
   }
 

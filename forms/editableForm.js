@@ -35,17 +35,17 @@ class EditableForm extends ToggleableForm {
 
   enableFields(){
     $(this.form).find('[name]').each(function(i, input){
-        $(input).removeAttr('disabled')
-        if($(input).attr('type') == 'file')
-          $(input).next().removeAttr('disabled')
+      $(input).removeAttr('disabled')
+      if($(input).attr('type') == 'file')
+        $(input).next().removeAttr('disabled')
     })
   }
 
   disableFields(){
       $(this.form).find('[name]').each(function(i, input){
-          $(input).attr('disabled', 'disabled')
-          if($(input).attr('type') == 'file')
-            $(input).next().attr('disabled', 'disabled')
+        $(input).attr('disabled', 'disabled')
+        if($(input).attr('type') == 'file')
+          $(input).next().attr('disabled', 'disabled')
       })
   }
 
