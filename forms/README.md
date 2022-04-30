@@ -131,7 +131,6 @@ let form = Form.new(form_selector)
   <input type="file" file="selected_file_name" name="file-input" onchange="$(this).attr('file', $(this)[0].files[0].name)">
   <container decision class="hidden"><anyelement submit="form_id"></container>
 </form>
-<anyelement submit="form_id"></anyelement>
 <anyelement alert="form_id"></anyelement> // For validation if exists
 ```
 
