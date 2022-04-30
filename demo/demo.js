@@ -23,10 +23,12 @@ function loadForm2(){
      */
     let count = 1;
     $("#form2 input[name]").each(function(i, input){
-        if($(input).attr('type') == 'file')
-            $(input).next().html('field'+count)
+        if($(input).attr('type') == 'file'){
+            $(input).next().html('field'+count) // for display
+            $(input).attr('file', 'field'+count) // for library
+        }
         else
-            $(input).val('field'+count)
+            $(input).val('field'+count) // for library
         count++
     })
 }

@@ -19,6 +19,12 @@ class Form {
 function initializeForms(){
   let forms = []
 	$("form[form_type]").each(function(i, form){
+    if($(form)[0].hasAttribute('prepare')){
+      let prepare = window[$(form).attr('prepare')];
+      if(typeof prepare == 'function')
+        prepare()
+      else console.log('Prepare Function Specified but Not Defined')
+    }
 		forms[$(form).attr('id')] = Form.new(form)
 	});
   return forms

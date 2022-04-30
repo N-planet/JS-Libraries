@@ -18,37 +18,32 @@ class ToggleableForm {
 		$(this.submitBtn).attr('type', 'button')
 		$(this.submitBtn).click(this.run.bind(this))
 
-    // load form initial data
-    if($(this.form)[0].hasAttribute('load'))
-      window[$(this.form).attr('load')]()
-
     // Toggling belongings
     this.enabled = false
     this.changed = false
     this.decision = $(this.form).find('[decision]')
     if(!this.decision.length)
       console.log("decision container not found for "+this.title+" form")
-    this.toggleBtn = $(this.form).find('[toggle_enable]')
-    if(!this.toggleBtn.length)
-      console.log("toggle status btn not found for "+this.title+" form")
-    $(this.toggleBtn).css("pointer-events", "auto")
-    this.toggleBtn.click(this.toggle.bind(this))
+
+    this.enableBtn = $(this.form).find('[enable]')
+    if(!this.enableBtn.length)
+      console.log("Enable Form btn not found for "+this.title+" form")
+
+    $(this.enableBtn).css("pointer-events", "auto")
+    this.enableBtn.click(this.enable.bind(this))
+
+    this.disableBtn = $(this.form).find('[disable]')
+    if(!this.disableBtn.length)
+      console.log("Disable form btn not found for "+this.title+" form")
+      
+    $(this.disableBtn).css("pointer-events", "auto")
+    this.disableBtn.click(this.disable.bind(this))  
   }
 
   update(){
     /**
      * Implemented in subclasses
      */
-  }
-
-  toggle(){
-    if (this.enabled){
-      if(this.validators === null || this.validators.validateAll())
-        this.disable()
-    }
-
-    else
-      this.enable();
   }
 
   enable(){
@@ -59,9 +54,8 @@ class ToggleableForm {
      */
     $(this.decision).addClass('hidden');
     this.enableFields() // implemented in subclass
-    this.toggleBtn.html(`
-      Commit&nbsp;<i class="bi bi-check2"></i>
-    `)
+    this.enableBtn.addClass("hidden")
+    this.disableBtn.removeClass("hidden")
     this.enabled = true  
   }
 
@@ -69,6 +63,9 @@ class ToggleableForm {
     /**
      * Disable editing
      */
+    if(this.validators !== null && !this.validators.validateAll())
+      return
+
     this.isChanged()
 
     if(!this.changed) 
@@ -76,9 +73,8 @@ class ToggleableForm {
     else 
       $(this.decision).removeClass('hidden')
     this.disableFields() // implemented in subclass
-    this.toggleBtn.html(`
-      Edit&nbsp;<i class="bi bi-pencil"></i>
-    `)
+    this.enableBtn.removeClass("hidden")
+    this.disableBtn.addClass("hidden")
     this.enabled = false
   }
 

@@ -16,18 +16,15 @@ class EditableForm extends ToggleableForm {
      */
     this.originals = []
     $(this.form).find("[name]:not([essential])").each(function(i, input){
-      if($(input).attr('type') == 'file'){ // tracking file
-        let key = $(input).attr('name')
-        let value = $(input).next().html()
-        this.originals[key] = value
-      }
-      else{
-        if(!this.originals.length) {
-          let key = $(input).attr('name')
-          let value = $(input).val()
-          this.originals[key] = value
-        }
-      } 
+      let key = $(input).attr('name');
+      let value;
+      if($(input).attr('type') == 'file') // tracking file
+        value = $(input).attr('file')
+        
+      else
+        value = $(input).val()
+      this.originals[key] = value
+      
     }.bind(this))
 
     this.disable()
@@ -57,8 +54,10 @@ class EditableForm extends ToggleableForm {
       $(this.form).find('[name]:not([essential])').each(function(i, input){
         let original = this.originals[$(input).attr('name')]
         let val
-        if($(input).attr('type') == 'file')
-          val = $(input).next().html()
+        if($(input).attr('type') == 'file'){
+          let name = $(input).attr('name')
+          val = $("[track="+name+"]").attr('data')
+        }
         else
           val = $(input).val()
   
@@ -81,9 +80,10 @@ class EditableForm extends ToggleableForm {
         let key = $(input).attr('name')
         let val
         if($(input).attr('type') == 'file')
-          val = $(input).next().html()
+          val = $(input).attr('file')
         else 
           val = $(input).val()
+
         if(val != this.originals[key]){
           val = $(input).attr('type') == 'file' ? $(input)[0].files[0] : val
           form_data.append(key, val)

@@ -10,6 +10,7 @@ class ListForm extends ToggleableForm {
      */
     super(form)
     this.initializeLists()
+    this.update()
   }
 
   initializeLists(){
@@ -21,8 +22,6 @@ class ListForm extends ToggleableForm {
       let tmp = new List(list)
       this.lists.push(tmp)
     }.bind(this))
-
-    this.update()
   }
 
   update(){
