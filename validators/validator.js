@@ -23,9 +23,16 @@ class Validator {
          * Validator Initialization
          */
         this.input = input
-        if($(this.input)[0].hasAttribute('confirm'))
+        if($(this.input)[0].hasAttribute('confirm')){
+            this.original = $(this.input).parents('form').find("input[name="+$(this.input).attr("confirm")+"]")
+            if(!this.original.length)
+                throw "Confirmational Validation Failed: Original Input Not Found For Input "+$(this.input).attr('confirm')
             this.fieldName = $(this.input).attr('confirm') + " confirmation"
+        }
         else{
+            if(!$(this.input)[0].hasAttribute('name'))
+                throw "Validation Creation Error: input has no attribute name inside form "+$(this.input).parents('form').attr('id')
+            
             this.fieldName = $(this.input).attr('name').replaceAll('_', ' ')
             this.fieldName = this.fieldName.charAt(0).toUpperCase() + this.fieldName.substr(1)
         }
@@ -72,8 +79,7 @@ class Validator {
 
         else if($(this.input)[0].hasAttribute("confirm")){
             // Confirmational Validator
-            let original = $(this.input).parents('form').find("input[name="+$(this.input).attr("confirm")+"]").val().trim()
-            if(input != original){
+            if(input != $(this.original).val()){
                 return 5 // Not Matching Code
             }
         }
