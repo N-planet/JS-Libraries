@@ -12,7 +12,8 @@ class Manager{
   import(dependencies){
     for(let dependency of dependencies){
       if(!this.dependencyExists(dependency)){
-        dependency = this.root+"/"+dependency
+        if(this.root.length)
+          dependency = this.root+"/"+dependency
         $.ajax({
           async:false,
           url:dependency,
