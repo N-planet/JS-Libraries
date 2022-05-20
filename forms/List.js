@@ -1,11 +1,10 @@
+manager.importFile("validators/Validators.js")
+
 class List {
   /**
-   * Class for tracking list of collections and identifying changes made to it (adding and removing)
-   * Files in collections are not supported yet
    */
   constructor(container){
     this.list = container
-
     this.title = $(this.list).attr('list')
 
     this.new = $('[new='+$(this.list).attr('list')+']') // New collection container
@@ -24,20 +23,28 @@ class List {
     this.next_id = -1
 
     $(this.list).find('[remove]').click(function(){
-      $(this).parents('[collection_id]').remove()
+      $(this).parents('[collection]').remove()
     })
 
     $(this.add).click(this.applyAdd.bind(this))
   }
 
-  applyAdd(){
-    if(this.validators.validateAll()){
-      this.addFn()
-      $(this.list).find('[collection_id] [remove]').click(function(i, removeBtn){
-        $(removeBtn).parents('[collection_id]').remove()
-      })
-      this.next_id--;
+  indexOfCollection(collection, array=this.originals){
+    let index;
+    for(index in array){
+      let matching = true;
+      // console.log(this.originals[index], collection)
+      for(let item in array[index]){
+        if(array[index][item] != collection[item]){
+          matching = false;
+          break;
+        }
+      }
+
+      if(matching)
+        return index;
     }
+    return -1;
   }
 
   showActions(){
@@ -56,36 +63,46 @@ class List {
     $(this.new).addClass('hidden')
   }
 
-  setOriginals(){
+  applyAdd(){
+    if(this.validators.validateAll()){
+      this.addFn()
+      $(this.list).find('[collection] [remove]').click(function(i, removeBtn){
+        $(removeBtn).parents('[collection]').remove()
+      })
+      this.next_id--;
+    }
+  }
+
+  update(){
     /**
      * Identify existing collections before any change
      */
     this.originals = []
-    $(this.list).find('[collection_id]').each(function(i, collection){
-      this.originals.push($(collection).attr('collection_id'))
+    $(this.list).find('[collection]').each(function(i, collection){
+      this.originals.push(List.readCollection(collection))
     }.bind(this))
   }
 
   isChanged(){
     /**
-     * check if there are any added or remove collections to the list
+     * check if there are any added or removed collections from the list
      */
-    let changed = false
     let temp = [...this.originals]
-    $(this.list).find('[collection_id]').each(function(i, collection){
-      let collection_id = $(collection).attr('collection_id')
-      let index = temp.indexOf(String(collection_id))
+    let changed = false;
+    $(this.list).find('[collection]').each(function(i, collection){
+      let current = List.readCollection(collection)
+      let index = this.indexOfCollection(current, temp)
       if(index != -1) temp.splice(index, 1) // Collection not changed
       else {
         // New collection is added
         changed = true
-        return false
+        return false;
       }
     }.bind(this))
-    if(!changed && temp.length)
-      changed = true
+    if(changed || temp.length)
+      return true;
     
-    return changed
+    return false
   }
 
   compare(){
@@ -95,23 +112,23 @@ class List {
     let added = []
     let removed = []
     let temp = [...this.originals]
-    $(this.list).find('[collection_id]').each(function(i, collection){
-      let collection_id = $(collection).attr('collection_id')
-      let index = temp.indexOf(String(collection_id))
+    $(this.list).find('[collection]').each(function(i, collection){
+      let current = List.readCollection(collection)
+      let index = this.indexOfCollection(current, temp)
       if(index != -1) temp.splice(index, 1) // Collection not changed
-      else {
+      else 
         // New collection is added
         added.push({...List.readCollection(collection)})
-      }
+
     }.bind(this))
 
     for (let i = 0; i < temp.length; i++)
       // Removed Collections
-      removed.push({'_id': temp[i]})
+      removed.push(temp[i])
     
     let result = {}
-    result[this.title+'-add'] = added
-    result[this.title+'-remove'] = removed
+    result[this.title+'-added'] = added
+    result[this.title+'-removed'] = removed
 
     return result
   }

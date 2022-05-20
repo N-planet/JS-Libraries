@@ -37,7 +37,7 @@ This form suits the case that you provide an empty form that is to be filled by 
 ## Features
 1. Real-time Valdiation
 2. AJAX Communication
-3. Can Deal With Binaries (file inputz)
+3. Can Deal With Binaries (file input)
 
 ## Components
 > 1. `Form` element with some attributes
@@ -198,29 +198,145 @@ let obj = Form.new(form_selector)
 
 >>># **Lists**
 
-This feature allows you to add/remove ***`SIMILAR`*** collections of data in addition to the other normal editable fields. Every editable form can contain any number of lists
+This feature allows you to add/remove ***`SIMILAR`*** collections of data in a list and identify the added/removed collections. 
 
-# Structure
+## Features
+1. Validation
+2. Enable/Disable Editing
+3. Lists Tracking
+4. AJAX Communication
 
-Any element having the attribute list="name of the list" is treated as a list object and the list attribute determines the key to be sent inside the request. <br>
-For example: list="professions" will send {..., professions:[collection1, collection2, ...], ...}
+## How It Works
+1. Lists are initialized by having `list` containers that hold collections each with attribute `collection` and contains some fields and a clickable element with the attribute `remove`
+2. To add new collection to the list, you must fill the required fields inside the `new` container and click on a button having the attribute `add` that validates the inputs and then calls a function that creates a new collection and appends it to the list
+    > The `UI developer` implements the function that creates the collection and appends to the list to `match his needs` and the `library calls this function` as we will see in a moment
+3. On form submit, the library compares each list before and after editing and identifies added & removed collections from each list and sends them autonomously to the desired api in the format:
+    > list1-added: [list of added collections]  
+    > list1-removed: [list of removed collections]  
+    > list2-added: [list of added collections]  
+    > list2-removed: [list of removed collections]  
+
+## Usage
+1. `Initialize` form instance
+2. `Save` some data as originals
+3. `Enable` editing
+4. Remove collections or add new collections to the available lists
+5. `Disable` again. and now the library `compares` the current data to the saved version to identify added & removed collections for each list
+6. if any changes are there, decision section appears with `confirm` (and `reset` will be implemented soon)
+
+
 <br>
-Note that this list just adds its data to the other form data to be sent so that many lists can work separately in one editable form (Not Tested)
 
-How to
-------
-Steps to create a list inside my editable form:-
+## Main Components
+> 1. `Form` element with some attributes
+> 2. `enable` & `disable` clickable elements  
+> 3. `List` containers to hold collections each with unique collection_id.  
+negative IDs are considered newly added collections
+> 4. `new` containers for each list container that builds new collections
+> 5. `decision` container containing `submit` clickable element
 
 <br>
 
-1. Create an element and set the list attribute
+## HTML abstraction
 
-2. Create a container (((inside the list container))) with the attribute [new] that contains fields to add new collections
+```html
+<form id="form_id" form_type="list" api="path/to/api" callback="function_to_handle_response">
+  <anyelement style="pointer-events: none;" enable>Edit></anyelement>
+  <anyelement style="pointer-events: none;" disable>Commit</anyelement>
 
-3. Create a function that visually adds the new collection anywhere (((inside the list container))) but outside the [new] container in the following form:
-> `<anyelement collection_id="-1"> <anyelemen2 name="field1"></anyelemen2> <anyelemen3 name="field2"></anyelemen3> <anyelemen4 name="field3"></anyelemen4> (and so on...) </anyelement>`
+  <input name="essentialField1" essential value="essentialValue1">
+  <input name="essentialField2" essential value="essentialValue2">
+  <anyelement list="list1">
+    <!-- Add Collection Here -->
+  </anyelement>
+  <anyelement list="list2">
+    <!-- Add Collection Here -->
+  </anyelement>
+  <container decision class="hidden"><anyelement submit="form_id"></container>
+</form>
 
+<anyelement new="list1">
+  <!-- Inputs to add collections to list1  -->
+  <input name="field1">
+  <input name="field2">
+  <p alert="list1"></p>
+  <button type="button" add="list1" function="add_to_list1">
+</anyelement>
+<anyelement new="list2">
+  <!-- Inputs to add collections to list1  -->
+  <input name="field1">
+  <input name="field2">
+  <p alert="list2"></p>
+  <button type="button" add="list2" function="add_to_list2">
+</anyelement>
+```
 
+## HTML Structure Walkthrough
+
+1. form_type="list"
+2. `enable` & `disable` elements
+3. `decision` element
+4. `essential` fields 
+5. `list` container holds collections each having `collection` attribute as we will see later on 
+6. `new` containers are used to append new collections to lists
+7. `add` button in each `new` container validates the new collection fields and calls the function specified by the attribute `function` that actually adds the collection to the list (implemented by the UI developer to match his needs)
+
+------------------------------------------------------------------------------------
+
+<br>
+
+## JS Abstraction
+
+```js
+fillTheFormWithInitialData() // load collections into the lists to be tracked for future changes
+let obj = Form.new(form_selector) // create instance and save the current collections as originals
+
+function add_to_list1(){
+  // Templating function reads the `new` container fields, creates a new collection in the desired form and then appends it to list1. This desired form might be table row, unordered list item, card, etc...
+  
+  // This is just an abstract example for a collection
+  $("[list=list1]").append(`
+    <anyelement collection>
+      <anyelement remove>X</anyelement>
+      <anyelement name="field1">val in input with name field1 in the 'new' container</anyelement>
+      <anyelement name="field2">val in input with name field2 in the 'new' container</anyelement>
+    </anyelement>
+  `)
+}
+
+function add_to_list2(){
+  // Re
+  $("[list=list2]").append(`
+    blah blah blah
+  `)
+}
+
+function function_to_handle_AJAX_response(response){
+  handleResponseHere()
+
+  // Optional section
+  if(endpoint_updated_data_successfully())
+    obj.update()
+}
+
+// Apply Some Changes and Let The Library Do The Remaining :)
+```
+
+<br>
+
+## JS Code Walkthrough
+
+1. `fillTheFormWithInitialData()`: Fills the form with initialized data (if not filled)
+
+2. `Form.new(form_selector)`: Creates instance and saves the current collections as originals for each list
+
+3. Implement templating functions for each list that create a new collection from the data entered inside the `new` container and append this collection to the right list
+
+4. `function_to_handle_AJAX_response(response)` as previous
+
+5. If everything done well, you might want to override the saved version of form data by the current one for further modification, just update the instance `obj.update()`
+
+<br>
 
 # Further Reading
 
@@ -228,26 +344,19 @@ Steps to create a list inside my editable form:-
 
 <br>
 
-- Forms Automation
+## `Forms Automation`
+
 ```js
 let forms
 $(document).ready(function(){
-  forms = initializeForms() // returns array of all form instances keyed by form_id for further accessibility
+  forms = initializeForms() // returns array of all form instances keyed by form_id for future accessibility
 })
-
-function form1_callback(response){
-  handleResponseHere()
-  if(you_want_to_set_current_data_as_originals())
-    forms[form1_id].update()
-}
-
-// Write callback for every tracked form
 
 ```
 
 `initializeForms()` searches for all `healthy` forms and runs a `custom preparing function if exists` and then runs `Form.new()`  
 
-`prepare` function is called before initializing each form which does the same as `fillTheFormWithInitialData()` and it can contain anything you need to do before initializing the library.  
+`prepare` function is called before initializing each form which does the same as `fillTheFormWithInitialData()` and it can also contain anything you need to do before initializing the library.  
 
 ```html
 <form id="form_id" form_type="editable" api="path/to/api" callback="function_to_handle_response" prepare="function_to_run_before_initializing_library">

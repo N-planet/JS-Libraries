@@ -1,4 +1,4 @@
-manager.import(["forms/basicForm.js", "forms/editableForm.js", "forms/listForm.js"])
+manager.import(["forms/BasicForm.js", "forms/EditableForm.js", "forms/ListForm.js"])
 
 class Form {
   static new(form){
@@ -11,7 +11,7 @@ class Form {
       case 'list':
         return new ListForm(form)
       default: 
-        throw "Form Creation Error: Unknown form type.\nAvailable types are basic, editable, and list"
+        throw "Form Creation Error: Unknown form type.\nAvailable types are basic, editable, and list\nTrace <form id='"+$(form).attr('id')+"'>"
     }
   }
 }
