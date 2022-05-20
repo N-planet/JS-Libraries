@@ -196,7 +196,7 @@ let obj = Form.new(form_selector)
 
 <br>
 
->>># **Lists**
+>>># **List Form**
 
 This feature allows you to add/remove ***`SIMILAR`*** collections of data in a list and identify the added/removed collections. 
 
@@ -247,10 +247,10 @@ negative IDs are considered newly added collections
   <input name="essentialField1" essential value="essentialValue1">
   <input name="essentialField2" essential value="essentialValue2">
   <anyelement list="list1">
-    <!-- Add Collection Here -->
+    <!-- Add Collections Here -->
   </anyelement>
   <anyelement list="list2">
-    <!-- Add Collection Here -->
+    <!-- Add Collections Here -->
   </anyelement>
   <container decision class="hidden"><anyelement submit="form_id"></container>
 </form>

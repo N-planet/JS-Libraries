@@ -28,12 +28,6 @@ class AJAX {
      */
   }
 
-	static reportFailure(request, status, response){
-		/**
-     * Function that reports ajax failures for system tracking
-     */
-	}
-
 	static ajax(options){
 		/**
 		 * options must contain url, type, data functions
