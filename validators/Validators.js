@@ -1,4 +1,4 @@
-manager.import(["validators/validator.js"])
+manager.import(["validators/Validator.js"])
 
 class Validators {
   /**
