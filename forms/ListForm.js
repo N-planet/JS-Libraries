@@ -1,4 +1,6 @@
-manager.import(["forms/List.js", "forms/BasicForm.js", "forms/ToggleableForm.js"])
+import {BasicForm} from "./BasicForm.js";
+import {ToggleableForm} from "./ToggleableForm.js"
+import {List} from "./List.js";
 
 class ListForm extends BasicForm {
   /**
@@ -56,3 +58,5 @@ class ListForm extends BasicForm {
     this.sender.send(this.payload())
   } 
 }
+
+export {ListForm}

@@ -1,3 +1,5 @@
+import "../forms/form.js"
+
 let forms
 $(document).ready(function (){
   forms = initializeForms();

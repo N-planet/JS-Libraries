@@ -1,4 +1,5 @@
-manager.import(["validators/Validators.js", "forms/BasicForm.js", "forms/ToggleableForm.js"])
+import {BasicForm} from "./BasicForm.js";
+import {ToggleableForm} from "./ToggleableForm.js"
 
 class EditableForm extends BasicForm {
   /**
@@ -54,3 +55,5 @@ class EditableForm extends BasicForm {
     return form_data
   }
 }
+
+export {EditableForm}

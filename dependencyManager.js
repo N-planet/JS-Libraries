@@ -84,18 +84,31 @@ class Manager{
     this.importFile("components/"+component+"/"+component+".js", reference)
   }
 
+  async importModule(path){
+    await import(path).then((module)=>{
+      this.dependencies.push(path)
+      console.log("Imported")
+    });
+  }
+
   import(dependencies, reference=Manager.root){
     /**
      * Imports multiple files and components at once
      * @param dependencies: list of paths for files and component names
      * @param reference: optional param overrides the default root path
     */
+    let count = 0
     for(let dependency of dependencies){
       if(dependency.indexOf('.') == -1)
         this.importComponent(dependency, reference)
-              
+          
+      else if(dependency[0] == '.' || dependency[0] == '/')  
+        this.importModule(dependency)
+
       else
         this.importFile(dependency, reference)
+      
+      count++;
     }
   }
 }
