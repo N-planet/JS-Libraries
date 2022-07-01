@@ -1,4 +1,4 @@
-manager.importFile("ajax.js")
+import { AJAX } from "../Ajax.js";
 
 class Sender {
   /**
@@ -28,3 +28,5 @@ class Sender {
 		})
   }
 }
+
+export {Sender}

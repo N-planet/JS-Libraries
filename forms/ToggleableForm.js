@@ -110,6 +110,7 @@ class ToggleableForm {
     this.enableBtn.removeClass("hidden")
     this.disableBtn.addClass("hidden")
     this.enabled = false
-  }
-  
+  } 
 }
+
+export {ToggleableForm}

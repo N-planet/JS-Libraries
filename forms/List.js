@@ -1,4 +1,4 @@
-manager.importFile("validators/Validators.js")
+import {Validators} from "../validators/Validators.js";
 
 class List {
   /**
@@ -143,3 +143,5 @@ class List {
     return result
   }
 }
+
+export {List}

@@ -1,4 +1,6 @@
-manager.import(["forms/BasicForm.js", "forms/EditableForm.js", "forms/ListForm.js"])
+import { BasicForm } from "./BasicForm.js";
+import { EditableForm } from "./EditableForm.js";
+import { ListForm } from "./ListForm.js";
 
 class Form {
   static new(form){
@@ -16,7 +18,7 @@ class Form {
   }
 }
 
-function initializeForms(){
+window.initializeForms = function(){
   let forms = []
 	$("form[form_type]").each(function(i, form){
     if($(form)[0].hasAttribute('prepare')){
@@ -29,3 +31,5 @@ function initializeForms(){
 	});
   return forms
 }
+
+window.Form = Form

@@ -73,7 +73,7 @@ class Manager{
     let htmlPath = this.root+"/components/"+component+"/"+component+".html"
     let jsPath = this.root+"/components/"+component+"/"+component+".js"
     let cssPath = this.root+"/components/"+component+"/"+component+".css"
-    
+
     this.importFile(
       htmlPath, 
       this.importFile.bind(this, jsPath)

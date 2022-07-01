@@ -1,4 +1,4 @@
-manager.import(["validators/Validator.js"])
+import {Validator} from "./Validator.js";
 
 class Validators {
   /**
@@ -79,6 +79,6 @@ class Validators {
 		}
 		$(this.msgContainer).html(text)
 	}
-
-
 }
+
+export {Validators}

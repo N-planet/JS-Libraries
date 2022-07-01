@@ -7,25 +7,28 @@ class AJAX {
     /**
      * Function that is called before sending ajax requests by default
      */
+    console.log("Request is about to start")
 	}
 
 	static complete(){
     /**
      * Function that is called after ajax requests are completed by default (called for both success and error status)
      */
+    console.log("Request Completed")
 	}
 
-	static error(e){
+	static error(e, options){
     /**
-     * Function that handles the error status by default
+     * Function catches the request failure
      */
-    console.log(e.status, e.responseText)
+    console.log("Fail:", options.data, e.status, e.responseText)
 	}
 
   static success(res){
     /**
      * Function that handles the success status by default
      */
+    console.log("Success:", res)
   }
 
 	static ajax(options){
@@ -47,7 +50,7 @@ class AJAX {
 
 		if(options.error === undefined){
 			options.error = function(e){
-				AJAX.error(e)
+				AJAX.error(e, options)
 			}
 		}
     
@@ -58,3 +61,5 @@ class AJAX {
 		$.ajax(options)
 	}
 }
+
+export {AJAX}

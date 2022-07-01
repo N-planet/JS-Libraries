@@ -87,3 +87,5 @@ class Validator {
         return 0 // Fine Error Code
     }
 }
+
+export {Validator}

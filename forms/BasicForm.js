@@ -1,4 +1,5 @@
-manager.import(["validators/Validators.js", "forms/Sender.js"])
+import {Validators} from "../validators/Validators.js";
+import {Sender} from "./Sender.js";
 
 class BasicForm {
 	/**
@@ -41,5 +42,6 @@ class BasicForm {
       this.sender.send(form_data)
     }
 	}
-	
 }
+
+export {BasicForm}
