@@ -2,29 +2,24 @@ class Manager{
   /**
    * Manages importing scripts and components
    * Singleton
-   * 
-   * Usage:
-   * 1. set the static variable root to match your needs
    */
-  static root = "/JS-Libraries" // default reference path that impotings
-  constructor(){
+  static stRoot = "/JS-Libraries"
+  constructor(root=false){
     this.dependencies = []
+    this.root = root ? root : Manager.stRoot
   }
 
-  #dependencyExists(path){
+  dependencyExists(path){
     return this.dependencies.includes(path)
   }
 
-  #importJs(path){
-    $.ajax({
-      async:false,
-      url:path,
-      dataType:"script",
-      cache:true,
-      error: function(e){
-        throw "Importing "+path+" Failed";
-      }
-    })
+  #importJs(path, callback){
+    let file_name = path.substr(path.lastIndexOf('/')+1).split('.')[0]
+    $("body").append(`
+      <script id="`+file_name+`Script" src="`+path+`"></script>
+    `)
+
+    $("#"+file_name+"Script").on('load', callback)
   }
 
   #importCss(path){
@@ -33,32 +28,29 @@ class Manager{
     )
   }
 
-  #importHtml(path){
+  #importHtml(path, callback){
     let fileIdentifier = path.substr(path.lastIndexOf('/')+1).split('.')[0]
     let place = $("#"+fileIdentifier+"-component");
-    if($(place).length){
-      $(place).load(path)
-    }
-    else {
+    if($(place).length)
+      $(place).load(path, callback)
+    
+    else 
       throw "Importing "+path+" Failed: container not found";
-    }
   }
 
-  importFile(dependency, reference=Manager.root){
+  importFile(dependency, callback){
     /**
      * Importing Single File (if not imported previosuly)
      * @param dependency: path to file
-     * @param reference: optional param overrides the default root path
      */
-    if(reference.length)
-      dependency = reference+'/'+dependency
-    
-    if(this.#dependencyExists(dependency))
+
+    let filename = dependency.substr(dependency.lastIndexOf('/')+1)
+    if(this.dependencyExists(dependency))
       return
 
-    switch(dependency.split('.')[1]){
+    switch(filename.split('.')[1]){
       case "js":
-        this.#importJs(dependency)
+        this.#importJs(dependency, callback)
         break;
 
       case "css":
@@ -66,36 +58,59 @@ class Manager{
         break;
       
       case "html":
-        this.#importHtml(dependency)
+        this.#importHtml(dependency, callback)
         break;
     }
 
     this.dependencies.push(dependency)
   }
 
-  importComponent(component, reference=Manager.root){
+  importGComponent(component){
     /**
      * Importing Componenet Files
-     * @param string component: component name
-     * @param reference: optional param overrides the default root path
+     * @param component: component name
      */
-    this.importFile("components/"+component+"/"+component+".html", reference)
-    this.importFile("components/"+component+"/"+component+".css", reference)
-    this.importFile("components/"+component+"/"+component+".js", reference)
+    let htmlPath = this.root+"/components/"+component+"/"+component+".html"
+    let jsPath = this.root+"/components/"+component+"/"+component+".js"
+    let cssPath = this.root+"/components/"+component+"/"+component+".css"
+    
+    this.importFile(
+      htmlPath, 
+      this.importFile.bind(this, jsPath)
+    )
+    this.importFile(cssPath) 
   }
 
-  import(dependencies, reference=Manager.root){
+  importComponent(component){
+    /**
+     * Importing Componenet Files
+     * @param component: component name
+     */
+    let htmlPath = component+"/"+component+".html"
+    let jsPath = component+"/"+component+".js"
+    let cssPath = component+"/"+component+".css"
+
+    this.importFile(
+      htmlPath, 
+      this.importFile.bind(this, jsPath)
+    )
+    this.importFile(cssPath)
+  }
+
+  import(dependencies, reference=this.root){
     /**
      * Imports multiple files and components at once
      * @param dependencies: list of paths for files and component names
-     * @param reference: optional param overrides the default root path
-    */
+     */
     for(let dependency of dependencies){
       if(dependency.indexOf('.') == -1)
-        this.importComponent(dependency, reference)
+        this.importComponent(dependency)
               
-      else
-        this.importFile(dependency, reference)
+      else{
+        if(reference.length)
+          dependency = reference+"/"+dependency
+        this.importFile(dependency)
+      }
     }
   }
 }
