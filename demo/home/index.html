@@ -1,0 +1,55 @@
+<html>
+<head>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <p class="hint">All the following forms allow only alphanumericals and white spaces (You can customize the regex as you like in your site)</p>
+  
+  <h4>Library applies dynamic forms interaction and control using AJAX and jQuery by adding simple HTML atributes</h4>
+  
+  <h1> Simple Form Example </h1>
+  <h4>Features:</h4>
+  <p>
+    Validation, AJAX request and handling response using custom function
+  </p>
+    <div component="form1">
+
+    </div>
+  <hr>
+  
+  <h1>Editable Form Example</h1>
+  <h4>Features:</h4>
+  <p>
+    Status Toggling, Validation, Tracking fields to send changes only (essential fields are always sent even if they are not changed), and handling response using custom function
+  </p>
+  
+  <div component="form2">
+
+  </div>
+  
+  <hr>
+  
+  <h1> List Form Example </h1>
+  <h4>Features:</h4>
+  <p>
+    Status Toggling, Validation, Tracking Collections to send only added/removed collections (essential fields are always sent), and handling response using custom function
+  </p>
+
+  <div component="form3">
+    
+  </div>
+  
+  <script src="../assets/vendor/jquery-3.6.0.min.js"></script>
+  <script src="../assets/vendor/dependencyManager.js"></script>
+
+  <script src="../assets/vendor/Validator.js"></script>
+  <script src="../assets/vendor/Ajax.js"></script>
+  <script src="../assets/vendor/Form.js"></script>
+  <script>
+    manager = new Manager()
+    manager.import(["./demo/assets/demo.js", "form1"])
+    manager.importComponent("form2")
+    manager.importComponent("form3")
+  </script>
+</body>
+</html> 

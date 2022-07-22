@@ -1,0 +1,12 @@
+<form id="form1" form_type="basic" api="https://team.nplanet.org/demo.php" request_type="POST" callback="simpleTest">
+  <input name="field1" placeholder="Required Field" must regex="^[a-zA-Z0-9 ]*$">
+  <input confirm="field1" placeholder="retype field1">
+  <input name="field2" placeholder="Optional Field" regex="^[a-zA-Z0-9 ]*$">
+  <p alert="form1"></p>
+</form>
+
+<button type="button" submit="form1">Submit Form1</button>
+<div class="result">
+  <h3>Payload</h3>
+  <div id="simple-form-result" class="payload"></div>
+</div>

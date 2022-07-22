@@ -1,0 +1,52 @@
+<form id="form3" form_type="list" api="https://team.nplanet.org/demo.php" request_type="POST" prepare="loadForm3" callback="listTest">
+  <p enable style="pointer-events: none;">Edit&nbsp;<i class="bi bi-pencil"></i></p>
+  <p disable style="pointer-events: none;">Commit&nbsp;<i class="bi bi-check2"></i></p>
+  <input name="essentialField1" essential value="essentialValue1">
+  <input name="essentialField2" essential value="essentialValue2">
+  <input name="essentialField3" essential value="essentialValue3">
+  <br>
+  <div class="lists">
+    <div list="list1">
+      <h4>List 1</h4>
+    </div>
+    <div list="list2">
+      <h4>List 2</h4>
+    </div>
+    <div list="list3">
+      <h4>List 3</h4>
+    </div>
+  </div>
+  
+  <div new="list1">
+    <h4>Add new element to list 1</h4>
+    <input name="field1" placeholder="required" must regex="^[a-zA-Z0-9 ]*$">
+    <input name="field2" placeholder="optional" regex="^[a-zA-Z0-9 ]*$">
+    <input name="field3" placeholder="required" must regex="^[a-zA-Z0-9 ]*$">
+    <p alert="list1"></p>
+    <button type="button" add="list1" function="addToList1">Add To List 1</button>
+  </div>
+  <div new="list2">
+    <h4>Add new element to list 2</h4>
+    <input name="field1" placeholder="optional" regex="^[a-zA-Z0-9 ]*$">
+    <input name="field2" placeholder="required" must regex="^[a-zA-Z0-9 ]*$">
+    <input name="field3" placeholder="required" must regex="^[a-zA-Z0-9 ]*$">
+    <p alert="list2"></p>
+    <button type="button" add="list2" function="addToList2">Add To List 2</button>
+  </div>
+  <div new="list3">
+    <h4>Add new element to list 3</h4>
+    <input name="field1" placeholder="rqeuired" must regex="^[a-zA-Z0-9 ]*$">
+    <input name="field2" placeholder="rqeuired" must regex="^[a-zA-Z0-9 ]*$">
+    <input name="field3" placeholder="required" must regex="^[a-zA-Z0-9 ]*$">
+    <p alert="list3"></p>
+    <button type="button" add="list3" function="addToList3">Add To List 3</button>
+  </div>
+  <div decision>
+    <button type="button" submit="form3">Submit Form3</button>
+  </div>
+</form>
+
+<div class="result">
+  <h3>Payload</h3>
+  <div id="list-form-result" class="payload"></div>
+</div>

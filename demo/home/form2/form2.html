@@ -1,0 +1,20 @@
+<form id="form2" form_type="editable" api="https://team.nplanet.org/demo.php" request_type="POST" prepare="loadForm2" callback="editableTest">
+  <p style="pointer-events: none;" enable>Edit&nbsp;<i class="bi bi-pencil"></i></p>
+  <p style="pointer-events: none;" disable>Commit&nbsp;<i class="bi bi-check2"></i></p>
+  <input name="essentialField1" disabled value="essentialValue1" essential>
+  <input name="essentialField2" class="hidden" value="essentialValue2" essential>
+  <input name="field3" placeholder="Required Field" must regex="^[a-zA-Z0-9 ]*$">
+  <input name="field4" placeholder="Optional Field" regex="^[a-zA-Z0-9 ]*$">
+  <input name="field5" class="hidden" onchange="$(this).next().html($(this)[0].files[0].name)" type="file">
+  <button type="button" track="field5" onclick="$(this).prev().click()">Selected File</button>
+  
+  <p alert="form2"></p>
+  <div decision class="hidden">
+    <button type="button" submit="form2">Submit Form2</button>
+  </div>
+</form>
+
+<div class="result">
+  <h3>Payload</h3>
+  <div id="editable-form-result" class="payload"></div>
+</div>
